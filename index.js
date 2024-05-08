@@ -1,25 +1,26 @@
 #!/usr/bin/env node
 import inquirer from "inquirer";
+import chalk from "chalk";
 let myBalance = 100000; // user balance 
 let myPin = 1234; // pin code
 // print message
-console.log("welcome to atm_machine");
+console.log(chalk.bgMagenta.bold("\n\t  welcome to saddam-hussain73-simple-atm-machine  \n"));
 let pinAnswer = await inquirer.prompt([
     {
         name: "pin",
         type: "number",
-        message: "enter your pin code"
+        message: chalk.yellow("enter your pin code:")
     }
 ]);
 if (pinAnswer.pin === myPin) {
-    console.log("pin is correct, login successfully");
+    console.log(chalk.bgGreen("\npin is correct, login successfully!\n"));
     // console.log(`current account balance is ${myBalance}`)
     let operationAns = await inquirer.prompt([
         {
             name: "operation",
             type: "list",
-            message: "select an operation",
-            choices: ["withdraw ammount", "check balance"]
+            message: chalk.yellow.bold("select an operation\n"),
+            choices: ["withdraw ammount", "check balance", "exit"]
         }
     ]);
     if (operationAns.operation === "withdraw ammount") {
@@ -27,7 +28,7 @@ if (pinAnswer.pin === myPin) {
             {
                 name: "withdrawMethod",
                 type: "list",
-                message: "select a withdrawl method",
+                message: chalk.yellow("select a withdrawl method\n"),
                 choices: ["fast cash", "enter amount"]
             }
         ]);
@@ -36,17 +37,17 @@ if (pinAnswer.pin === myPin) {
                 {
                     name: "fastCash",
                     type: "list",
-                    message: "select amount",
+                    message: chalk.yellow("select amount\n"),
                     choices: [5000, 10000, 15000, 25000, 50000]
                 }
             ]);
             if (fastCashAns.fastCash > myBalance) {
-                console.log("insufficient balance");
+                console.log(chalk.bgRed.bold("\ninsufficient balance\n"));
             }
             else {
                 myBalance -= fastCashAns.fastCash;
-                console.log(`${fastCashAns.fastCash} withdraw successfully`);
-                console.log(`your remaining balance is ${myBalance}`);
+                console.log(chalk.bgGreen.bold(`\n${fastCashAns.fastCash} withdraw successfully\n`));
+                console.log(chalk.bgBlue.bold(`your remaining balance is ${myBalance}\n`));
             }
         }
         else if (withdrawAns.withdrawMethod === "enter amount") {
@@ -54,23 +55,26 @@ if (pinAnswer.pin === myPin) {
                 {
                     name: "ammount",
                     type: "number",
-                    message: "enter the ammount to withdraw"
+                    message: chalk.yellow("enter the ammount to withdraw\n")
                 }
             ]);
             if (ammountAns.ammount > myBalance) {
-                console.log("insufficient balance");
+                console.log(chalk.bgRed.bold("\ninsufficient balance!\n"));
             }
             else {
                 myBalance -= ammountAns.ammount;
-                console.log(`${ammountAns.ammount} withdraw successfully`);
-                console.log(`your remaining balance is ${myBalance}`);
+                console.log(chalk.bgGreen.bold(`\n${ammountAns.ammount} withdraw successfully\n`));
+                console.log(chalk.bgBlue.bold(`your remaining balance is ${myBalance}\n`));
             }
         }
     }
     else if (operationAns.operation === "check balance") {
-        console.log(`your account balance is ${myBalance}`);
+        console.log(chalk.bgBlue(`\nyour account balance is ${myBalance}\n`));
+    }
+    else if (operationAns.operation === "exit") {
+        console.log(chalk.yellow.bold `\nthank you for using.${chalk.bgGreen.bold("\n\tgoodby")}`);
     }
 }
 else {
-    console.log("pin is incorrect, try again");
+    console.log(chalk.bgRed.bold("\npin is incorrect, try again!\n"));
 }
